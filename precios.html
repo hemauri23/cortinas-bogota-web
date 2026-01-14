@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Cortinas + WhatsApp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+#btnWhats {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Espacio entre icono y texto */
+    
+    font-size: 20px;        /* Tamaño del texto */
+    font-weight: 600;       /* Texto más fuerte */
+    
+    padding: 14px 28px;     /* Altura y ancho más grandes */
+    border-radius: 12px;    /* Bordes redondeados elegantes */
+    
+    background: #25D366;    /* Color verde WhatsApp */
+    color: #fff;
+    
+    transform: scale(1);
+    transition: 0.3s ease;
+}
+
+#btnWhats:hover {
+    transform: scale(1.06); /* Animación suave al pasar el mouse */
+}
+
+#btnWhats svg {
+    width: 28px;  /* Aumenta el ícono */
+    height: 28px;
+}
+
+
+
+
+  /* ✅ Evita desbordes en todos los elementos */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body{
+    font-family:Arial, sans-serif;
+    background:#f7f7f7;
+    margin:0;
+    padding:24px;
+  }
+  .wrap{
+  max-width: 900px;   /* antes 480 */
+  width: 100%;
+  margin: auto;
+  background: #fff;
+  padding: 10px;
+  border-radius: 0;
+  box-shadow:none;
+  border:none;
+}
+
+  h2{text-align:center;margin-bottom:18px}
+
+  label{
+    font-size:15px;
+    color:#333;
+    margin-top:12px;
+    display:block;
+  }
+
+  input,select{
+    width:100%;
+    padding:10px;
+    border:1px solid #bbb;
+    border-radius:8px;
+    font-size:16px;
+    margin-top:6px;
+    background:#fff;
+  }
+
+  /* ✅ Fila Ancho/Alto robusta y sin desbordes */
+  .row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:8px;
+    width:100%;
+  }
+
+  /* Responsive: en móvil apila */
+  @media (max-width: 480px){
+    .row{ grid-template-columns:1fr; }
+  }
+
+  button, a.btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    width:100%;
+    margin-top:14px;
+    padding:12px;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer
+  }
+  button{background:#007bff;color:#fff;border:none}
+  button:hover{background:#0069d9}
+
+  /* ✅ Botón WhatsApp */
+  a.btn{
+    background:#25D366;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  a.btn[aria-disabled="true"]{
+    opacity:.6;
+    pointer-events:none;
+  }
+
+#btnWhats svg {
+    width: 36px !important;  /* agranda el ícono */
+    height: 36px !important;
+}
+
+  /* ✅ Resultado oculto hasta calcular (evita la barra verde vacía) */
+  #resultado{
+    display:none;
+    margin-top:14px;
+    padding:14px;
+    background:#e8f8ec;
+    border-left:5px solid #28a745;
+    border-radius:8px;
+    font-size:18px;
+    word-wrap:break-word;
+  }
+  small{color:#666}
+
+  /* Animación de salto */
+  #btnWhats { animation: saltar 1.3s infinite ease-in-out; transform-origin: center; }
+  @keyframes saltar {
+    0%, 100% { transform: translateY(0); }
+    35% { transform: translateY(-6px); }
+    55% { transform: translateY(0); }
+    75% { transform: translateY(-3px); }
+  }
+
+  /* Mensajes transparentes de conversión */
+  .msg-conversion{
+    font-size:13px;
+    color:#000;
+    opacity:.35;
+    margin-top:4px;
+    display:none;
+  }
+
+
+  html, body {
+    background: transparent !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  label {
+    font-size: 20px !important;  /* tamaño de letra más grande */
+    font-weight: 600;            /* opcional: más grueso */
+}
+
+label:nth-of-type(3),
+#whats {
+    display: none !important;
+}
+</style>
+
+
+
+</head>
+<body>
+
+<div class="wrap">
+  <h2>Descubre el Precio de Tu Cortina Ideal </h2>
+<br>
+  <label>Tipo de Cortina:</label>
+  <select id="tipo">
+    <option value="80000">1. BLACKOUT</option>
+<option value="250000">2. ONDA PERFECTA</option>
+<option value="120000">3. PANEL JAPONÉS</option>
+<option value="120000">4. ROMANA</option>
+<option value="140000">5. SHEER ELEGANCE</option>
+<option value="100000">6. SOLAR SCREEN</option>
+
+  </select>
+
+  <div class="row">
+    <div>
+      <label>Ancho (m):</label>
+      <input type="number" id="ancho" step="0.01" placeholder="Ej: 2.00" inputmode="decimal">
+      <div id="msgAncho" class="msg-conversion">Convertimos 420 → 4.20 m automáticamente.</div>
+    </div>
+    <div>
+      <label>Alto (m):</label>
+      <input type="number" id="alto" step="0.01" placeholder="Ej: 2.20" inputmode="decimal">
+      <div id="msgAlto" class="msg-conversion">Convertimos 220 → 2.20 m automáticamente.</div>
+    </div>
+  </div>
+
+  <label></label>
+  <input type="tel" id="whats" placeholder="Ej: 3001234567" inputmode="tel">
+
+  <button id="btnCalcular">$ Calcular Precio</button>
+
+  <div id="resultado"></div>
+
+  <a id="btnWhats" class="btn" href="#" target="_blank" aria-disabled="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" style="vertical-align:middle">
+      <path fill="#fff" d="M16.001 3.2c-7.063 0-12.8 5.737-12.8 12.8 0 2.252.589 4.449 1.709 6.387L3.2 28.8l6.593-1.664c1.852.999 3.94 1.523 6.208 1.523 7.063 0 12.8-5.737 12.8-12.8s-5.737-12.8-12.8-12.8zm0 23.04c-2.019 0-3.974-.543-5.683-1.57l-.407-.241-3.91.987 1.043-3.808-.265-.392c-1.083-1.605-1.655-3.47-1.655-5.416 0-5.466 4.446-9.92 9.92-9.92s9.92 4.454 9.92 9.92-4.454 9.92-9.92 9.92zm5.536-7.466c-.301-.15-1.777-.878-2.054-.978-.277-.101-.48-.15-.683.15-.203.301-.784.977-.962 1.178-.178.203-.356.226-.657.075-.301-.15-1.271-.469-2.421-1.495-.895-.799-1.5-1.787-1.677-2.088-.178-.301-.02-.464.13-.614.134-.134.301-.356.452-.534.151-.178.201-.301.301-.502.101-.203.05-.377-.025-.527-.075-.15-.683-1.644-.936-2.253-.247-.6-.499-.518-.683-.527l-.583-.01c-.203 0-.527.075-.804.377-.277.301-1.056 1.03-1.056 2.503 0 1.473 1.08 2.898 1.231 3.099.151.203 2.124 3.245 5.152 4.546.72.31 1.282.494 1.721.632.722.23 1.378.198 1.897.12.579-.086 1.777-.726 2.028-1.428.251-.7.251-1.301.176-1.428-.075-.127-.277-.201-.578-.351z"/>
+    </svg>
+    Deseo Un Asesor
+  </a>
+
+  <small>El botón se habilita después de calcular.</small>
+</div>
+
+<script>
+const fmtCOP = new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0});
+
+function normalizarNumero(numStr){
+  let d = (numStr||"").replace(/\D+/g,"");
+  if(d.length===10) d = "57"+d; // celular CO sin indicativo
+  return d;
+}
+
+function nombreTipo(select){
+  return select.options[select.selectedIndex].text.split(" — ")[0];
+}
+
+function construirMensaje(datos){
+  const {tipo, ancho, alto, area, precioM2, total} = datos;
+  return [
+    "¡Hola! 👋 Me interesa estos productos:",
+    `• Tipo de cortina: ${tipo}`,
+    `• Medidas: ${ancho.toFixed(2)}m × ${alto.toFixed(2)}m`,
+    `• Área total: ${area.toFixed(2)} m²`,
+    `• Precio x m²: ${fmtCOP.format(precioM2)}`,
+    `• Total estimado: ${fmtCOP.format(total)}`,
+    "",
+    "¿Me puedes brindar más información?"
+  ].join("\n");
+}
+
+/* ✅ Normaliza medidas (coma/punto; 420=>4.20m) y muestra aviso transparente */
+function normalizarMedida(valorInput, msgElementId, inputId){
+  const msg = document.getElementById(msgElementId);
+  msg.style.display = "none";
+
+  let v = (valorInput || "").toString().replace(",", ".");
+  let num = parseFloat(v);
+  if (isNaN(num)) return NaN;
+
+  if (num > 10) {
+    num = num / 100;       // cm -> m
+    msg.style.display = "block";
+  }
+
+  const inp = document.getElementById(inputId);
+  if (inp) inp.value = num.toFixed(2);
+
+  return num;
+}
+
+function calcular(){
+  const sel = document.getElementById("tipo");
+  const precioM2 = parseInt(sel.value,10);
+  const tipo = nombreTipo(sel);
+
+  const ancho = normalizarMedida(document.getElementById("ancho").value, "msgAncho", "ancho");
+  const alto  = normalizarMedida(document.getElementById("alto").value,  "msgAlto",  "alto");
+
+  const res = document.getElementById("resultado");
+
+  if(!(ancho>0) || !(alto>0)){
+    res.style.display = "block";
+    res.innerHTML = "⚠️ Ingresa medidas válidas.";
+    const b = document.getElementById("btnWhats");
+    b.setAttribute("aria-disabled","true");
+    b.href = "#";
+    return;
+  }
+
+  const area = ancho * alto;
+  const total = area * precioM2;
+
+  res.style.display = "block";
+  res.innerHTML =
+    `📏 Área: <b>${area.toFixed(2)} m²</b><br>
+     💵 Precio x m²: <b>${fmtCOP.format(precioM2)}</b><br>
+     ✅ Total: <b>${fmtCOP.format(total)}</b>`;
+
+  const msg = construirMensaje({tipo, ancho, alto, area, precioM2, total});
+
+// ✅ Número FIJO de la empresa (siempre llega aquí)
+const numeroEmpresa = "573184274876"; // <-- CAMBIA AQUÍ SI ES OTRO
+const base = `https://wa.me/${numeroEmpresa}`;
+
+// ✅ Tomamos el número que el cliente escribió SOLO para adjuntarlo en el mensaje
+const numeroCliente = document.getElementById("whats").value.trim();
+
+let msgFinal = msg;
+
+if (numeroCliente) {
+  msgFinal += `\n\n📱 Mi número de contacto: ${numeroCliente}`;
+}
+
+const url = `${base}?text=${encodeURIComponent(msgFinal)}`;
+
+
+
+  const btn = document.getElementById("btnWhats");
+  btn.href = url;
+  btn.setAttribute("aria-disabled","false");
+}
+
+document.getElementById("btnCalcular").addEventListener("click", calcular);
+</script>
+
+</body>
+</html>
